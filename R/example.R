@@ -2,6 +2,7 @@ rm(list=ls())
 
 lpaggreg_location="/opt/ptools/lpaggreg";
 source("lpaggreg.R", echo=TRUE, local=TRUE)
+source("lpaggreg_pjdump.R", echo=TRUE, local=TRUE)
 
 #Synthetic example: 2 processes, 2 types, 5 timeslices (keep the same order)
 testArray = array(dim=c(2,2,5))
@@ -53,7 +54,7 @@ trace=parsepjdump("nemo.exe.128tasks.chop1.clustered.pjdump")
 
 trace$data<-trace$data[!(trace$data$Value %in% c('Duration Filtered','Noise')),]
 
-micro=pjdump2microstate(trace,100)
+micro=pjdump2micro(trace,100, "State")
 
 #Aggregations
 odf<-oaggregate(micro$data, th)
@@ -61,27 +62,27 @@ hdf<-haggregate(micro$data, micro$hierarchy, th)
 #ddf<-daggregate(micro$data, micro$hierarchy, th)
 
 #Printing the algorithm output
-odf
-hdf
+head(odf)
+head(hdf)
 #head(ddf)
 
 #Generating a plot for a randomly chosen parameter
 qualplot(odf)
-oplot(omacro(odf$Partitions, micro, odf$POpt), color_generator_Clusters)
+oplot_stacked_state(omacro(odf$Partitions, micro, odf$Qualities[12,"Parameter"]), color_generator_Clusters)
 qualplot(hdf)
-hplot(hmacro(hdf$Partitions, micro, hdf$POpt), color_generator_Clusters)
+hplot_treemap_state(hmacro(hdf$Partitions, micro, hdf$POpt), color_generator_Clusters)
 
-#Without hierarchy
-trace=parsepjdump("cholesky_11520_960_starpu_25_3_dmda_1_idcin-2.grenoble.grid5000.fr_2016-08-21_20-49-12_pjdump.csv")
-
-#Example of filtering
-trace$data<-trace$data[!(trace$data$Value %in% c('Idle','Sleeping')),]
+# #Without hierarchy
+# trace=parsepjdump("cholesky_11520_960_starpu_25_3_dmda_1_idcin-2.grenoble.grid5000.fr_2016-08-21_20-49-12_pjdump.csv")
+# 
+# #Example of filtering
+# trace$data<-trace$data[!(trace$data$Value %in% c('Idle','Sleeping')),]
 
 #No hierarchy (because it's not present in the trace, but it should be...)
-micro=pjdump2microstate(trace,50,FALSE)
-
-odf<-oaggregate(micro$data, th)
-
-odf
-qualplot(odf)
-oplot(omacro(odf$Partitions, micro, odf$POpt))
+# micro=pjdump2micro(trace,50,"State",FALSE)
+# 
+# odf<-oaggregate(micro$data, th)
+# 
+# odf
+# qualplot(odf)
+# oplot_stacked_state(omacro(odf$Partitions, micro, odf$POpt))
