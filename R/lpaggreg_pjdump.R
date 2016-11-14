@@ -82,7 +82,7 @@ slicerstate <- function (trace, timeSliceNumber)
 
 slicerprvcounter <- function (trace, timeSliceNumber)
 {
-  trace$Value<-trace$Depth/trace$Duration
+  trace$Value<-trace$Value/trace$Duration
   start <- min(trace$Start)
   trace$Start <- trace$Start - start
   trace$End <- trace$End - start
@@ -96,17 +96,18 @@ slicerprvcounter <- function (trace, timeSliceNumber)
   h$Duration <- NULL;
   m <- h %>% group_by(ResourceId, Type, Start, End, SliceId, Value) %>%
     mutate(N=n(), TinTS = (min(End,TsEnd) - max(Start,TsStart))) %>%
-    group_by(ResourceId, SliceId, Type, Value, TsStart, TsEnd) %>%
+    group_by(ResourceId, SliceId, Type, TsStart, TsEnd) %>%
     summarize (Mean=weighted.mean(Value, TinTS), Normalized=Mean) %>%
     as.data.frame();
   p <- expand.grid(ResourceId=unique(m$ResourceId), SliceId = 1:max(m$SliceId), Type = unique(m$Type));
   p$TsStart = 0;
   p$TsEnd = 0;
-  p$Sum = 0;
+  p$Mean = 0;
   p$Normalized = 0;
   n <- rbind(p, m);
   o <- n %>% group_by (ResourceId, SliceId, Type) %>%
     summarize(TsStart = max(TsStart), TsEnd = max(TsEnd), Mean = max(Mean), Normalized=max(Normalized)) %>% as.data.frame;
+  o$Normalized <- o$Normalized/(max(o$Normalized))[1]
   return (o);
 }
 
@@ -115,6 +116,7 @@ parsepjdump <- function (file){
   names <- c("Nature", "ResourceId", "Type", "Start", "End", "Duration", "Depth", "Value", "a", "b", "c", "d", "e", "f", "g")
   trace <- read.table(file, sep=",", fill=TRUE, header=FALSE, strip.white=TRUE, col.names=names)
   
+  trace[trace$Nature %in% 'Variable', "Value"] <- trace[trace$Nature %in% 'Variable',"Depth"]
   trace$a <- NULL
   trace$b <- NULL
   trace$c <- NULL
@@ -249,7 +251,10 @@ hmacro <- function(df, micro, p){
   }
   agg <- dfdata[dfdata$Space %in% df$Space,]
   agg <- aggregate(value ~ Space+Type+Time, data = agg, FUN = sum)
-  agg
+  agg <- sqldf('SELECT agg.Space, agg.Type, agg.Time, agg.value, df.Size
+             FROM agg
+             INNER JOIN df
+             ON (agg.Space == df.Space)')
 }
 
 qualplot <- function(results){
@@ -284,4 +289,10 @@ hplot_treemap_state <-function(agg, FUN=color_generator){
   vcolors=FUN(unique(agg$Type))
   agg$Color=vcolors[agg$Type]
   treemap(agg, index=c("Space", "Type"), vSize="value", vColor="Color", type="color", algorithm="squarified", border.col="white", bg.labels="grey", title="")
+}
+
+hplot_treemap_perfcounter <-function(agg){
+  agg <- aggregate(value ~ Space+Type+Size, data = agg, FUN = mean)
+  agg$value=agg$value/agg$Size
+  treemap(agg, index=c("Space", "Type"), vSize="Size", vColor="value", type="value", palette="RdYlBu", range=c(0,1), mapping= c(0, 0.5, 1), algorithm="squarified", border.col="white", bg.labels="grey", title="")
 }
