@@ -7,7 +7,9 @@ source("lpaggreg_pjdump.R", echo=TRUE, local=TRUE)
 #Threshold: 0<th<1, lower value means more accuracy for retrieving the list of partitions but longer computation time
 th=0.001
 
-trace=parsepjdump("nemo.exe.128tasks.chop1.clustered.counters-only.pjdump")
+original_trace=parsepjdump("nemo.exe.128tasks.chop1.clustered.counters-only.pjdump")
+
+trace=original_trace
 
 trace$data<-trace$data[(trace$data$Type %in% c('(PAPI_TOT_INS) Instr completed', '(PAPI_TOT_CYC) Total cycles')),]
 
@@ -27,3 +29,15 @@ hdf<-haggregate(micro$data, micro$hierarchy, th)
 
 qualplot(hdf)
 hplot_treemap_perfcounter(hmacro(hdf$Partitions, micro, hdf$POpt))
+
+trace=original_trace
+
+trace$data<-trace$data[(trace$data$Type %in% c('(PAPI_L1_DCM) L1D cache misses')),]
+
+micro=pjdump2micro(trace,1, "Counter")
+print(micro)
+
+hdf<-haggregate(micro$data, micro$hierarchy, th)
+
+qualplot(hdf)
+hplot_treemap_perfcounter(hmacro(hdf$Partitions, micro, hdf$Qualities[1,"Parameter"]))

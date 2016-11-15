@@ -67,7 +67,7 @@ slicerstate <- function (trace, timeSliceNumber)
   m <- h %>% group_by(ResourceId, Start, End, SliceId, Type) %>%
     mutate(N=n(), TinTS = (min(End,TsEnd) - max(Start,TsStart))) %>%
     group_by(ResourceId, SliceId, Type, TsStart, TsEnd) %>%
-    summarize (Sum=sum(TinTS), Normalized=Sum/slicets) %>%
+    summarize (Sum=sum(TinTS), Normalized=Sum/maxts) %>%
     as.data.frame();
   p <- expand.grid(ResourceId=unique(m$ResourceId), SliceId = 1:max(m$SliceId), Type = unique(m$Type));
   p$TsStart = 0;
@@ -107,7 +107,8 @@ slicerprvcounter <- function (trace, timeSliceNumber)
   n <- rbind(p, m);
   o <- n %>% group_by (ResourceId, SliceId, Type) %>%
     summarize(TsStart = max(TsStart), TsEnd = max(TsEnd), Mean = max(Mean), Normalized=max(Normalized)) %>% as.data.frame;
-  o$Normalized <- o$Normalized/(max(o$Normalized))[1]
+  sn=(sum(o$Normalized))
+  o$Normalized <- o$Normalized/sn
   return (o);
 }
 
@@ -294,5 +295,5 @@ hplot_treemap_state <-function(agg, FUN=color_generator){
 hplot_treemap_perfcounter <-function(agg){
   agg <- aggregate(value ~ Space+Type+Size, data = agg, FUN = mean)
   agg$value=agg$value/agg$Size
-  treemap(agg, index=c("Space", "Type"), vSize="Size", vColor="value", type="value", palette="RdYlBu", range=c(0,1), mapping= c(0, 0.5, 1), algorithm="squarified", border.col="white", bg.labels="grey", title="")
+  treemap(agg, index=c("Space", "Type"), vSize="Size", vColor="value", type="manual", palette="RdYlBu", algorithm="squarified", border.col="white", bg.labels="grey", title="")
 }
