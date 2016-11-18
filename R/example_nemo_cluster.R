@@ -48,6 +48,7 @@ hdf<-haggregate(micro$data, micro$hierarchy, th)
 
 #Generating a plot for a randomly chosen parameter
 qualplot(odf)
+oplot_stacked_state(omacro(odf$Partitions, micro, odf$POpt), color_generator_Clusters)
 oplot_stacked_state(omacro(odf$Partitions, micro, odf$Qualities[12,"Parameter"]), color_generator_Clusters)
 qualplot(hdf)
 hplot_treemap_state(hmacro(hdf$Partitions, micro, hdf$POpt), color_generator_Clusters)

@@ -80,13 +80,16 @@ slicerstate <- function (trace, timeSliceNumber)
   return (o);
 }
 
+
 slicerprvcounter <- function (trace, timeSliceNumber)
 {
-  trace$Value<-trace$Value/trace$Duration
   start <- min(trace$Start)
   trace$Start <- trace$Start - start
   trace$End <- trace$End - start
   maxts <- max(trace$End)
+  trace <- trace %>% group_by(ResourceId, Type) %>% mutate(Value=lead(Value)) %>% na.omit()
+  print(trace)
+  trace$Value<-trace$Value/trace$Duration
   slicets = maxts/timeSliceNumber;
   slices <- data.frame(SliceId=1:timeSliceNumber, TsStart=(0:(timeSliceNumber-1))*slicets, TsEnd=(1:timeSliceNumber)*slicets);
   h <- sqldf('SELECT trace.ResourceId, trace.Type, trace.Start, trace.End, trace.Duration, trace.Value, slices.SliceId, slices.TsStart, slices.TsEnd
@@ -107,8 +110,7 @@ slicerprvcounter <- function (trace, timeSliceNumber)
   n <- rbind(p, m);
   o <- n %>% group_by (ResourceId, SliceId, Type) %>%
     summarize(TsStart = max(TsStart), TsEnd = max(TsEnd), Mean = max(Mean), Normalized=max(Normalized)) %>% as.data.frame;
-  sn=(sum(o$Normalized))
-  o$Normalized <- o$Normalized/sn
+  o <- o %>% group_by(Type) %>% mutate(Normalized=Normalized/sum(Normalized))
   return (o);
 }
 
@@ -117,7 +119,7 @@ parsepjdump <- function (file){
   names <- c("Nature", "ResourceId", "Type", "Start", "End", "Duration", "Depth", "Value", "a", "b", "c", "d", "e", "f", "g")
   trace <- read.table(file, sep=",", fill=TRUE, header=FALSE, strip.white=TRUE, col.names=names)
   
-  trace[trace$Nature %in% 'Variable', "Value"] <- trace[trace$Nature %in% 'Variable',"Depth"]
+  trace[trace$Nature %in% 'Variable', "Value"] <- as.numeric(levels((trace[trace$Nature %in% 'Variable',"Depth"])))[(trace[trace$Nature %in% 'Variable',"Depth"])]
   trace$a <- NULL
   trace$b <- NULL
   trace$c <- NULL
@@ -244,15 +246,17 @@ hmacro <- function(df, micro, p){
   for (r in 1:nrow(df)) {
     df[r,"Space"]<-names(vhierarchy)[df[r,"Node"]]
   }
+  dfdata$Parent="0"
   path=getpath(vhierarchy,leavesize)
   for (h in 1:(length(path)-1)){
+    dfdata[dfdata$Space %in% names(vhierarchy)[path[h]],"Parent"]<-names(vhierarchy)[vhierarchy[path[h]]]
     dfdata2<-dfdata[dfdata$Space %in% names(vhierarchy)[path[h]],]
     dfdata2$Space<-names(vhierarchy)[vhierarchy[path[h]]]
     dfdata=rbind(dfdata,dfdata2)
   }
   agg <- dfdata[dfdata$Space %in% df$Space,]
-  agg <- aggregate(value ~ Space+Type+Time, data = agg, FUN = sum)
-  agg <- sqldf('SELECT agg.Space, agg.Type, agg.Time, agg.value, df.Size
+  agg <- aggregate(value ~ Space+Type+Time+Parent, data = agg, FUN = sum)
+  agg <- sqldf('SELECT agg.Space, agg.Type, agg.Time, agg.Parent, agg.value, df.Size
              FROM agg
              INNER JOIN df
              ON (agg.Space == df.Space)')
@@ -286,14 +290,14 @@ oplot_stacked_state <-function(agg, FUN=color_generator){
 }
 
 hplot_treemap_state <-function(agg, FUN=color_generator){
-  agg <- aggregate(value ~ Space+Type, data = agg, FUN = mean)
+  agg <- aggregate(value ~ Space+Type+Parent, data = agg, FUN = mean)
   vcolors=FUN(unique(agg$Type))
   agg$Color=vcolors[agg$Type]
-  treemap(agg, index=c("Space", "Type"), vSize="value", vColor="Color", type="color", algorithm="squarified", border.col="white", bg.labels="grey", title="")
+  treemap(agg, index=c("Parent", "Space", "Type"), vSize="value", vColor="Color", type="color", algorithm="squarified", border.col="white", bg.labels="grey", title="")
 }
 
 hplot_treemap_perfcounter <-function(agg){
-  agg <- aggregate(value ~ Space+Type+Size, data = agg, FUN = mean)
+  agg <- aggregate(value ~ Space+Type+Size+Parent, data = agg, FUN = mean)
   agg$value=agg$value/agg$Size
-  treemap(agg, index=c("Space", "Type"), vSize="Size", vColor="value", type="manual", palette="RdYlBu", algorithm="squarified", border.col="white", bg.labels="grey", title="")
+  treemap(agg, index=c("Parent", "Space", "Type"), vSize="Size", vColor="value", type="manual", palette="RdYlBu", algorithm="squarified", border.col="white", bg.labels="grey", title="")
 }
