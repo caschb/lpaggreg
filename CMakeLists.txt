@@ -1,11 +1,6 @@
-#Can be edited
+cmake_minimum_required(VERSION 3.10)
 
-OPTION(STATIC "Build a static library" OFF)
-
-#Should not be modified
-
-cmake_minimum_required(VERSION 3.1)
-
+project(lpaggreg LANGUAGES CXX)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
@@ -21,7 +16,7 @@ if ( CMAKE_COMPILER_IS_GNUCC )
 #  add_definitions ("-Wall")
 endif ( CMAKE_COMPILER_IS_GNUCC )
 
-
+OPTION(STATIC "Build a static library" OFF)
 enable_testing()
 
 ADD_SUBDIRECTORY(src)
