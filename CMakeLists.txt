@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(lpaggreg LANGUAGES CXX)
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 set(LPAGGREG_VERSION_MAJOR "4")
 set(LPAGGREG_VERSION_MINOR "0")

@@ -2,11 +2,12 @@ cmake_minimum_required(VERSION 3.10)
 
 project(lpaggreg)
 
-FILE(GLOB_RECURSE SRC_FILES ${CMAKE_HOME_DIRECTORY}/src/lpaggreg/*.*)
-set(HEADER_DIR ${CMAKE_HOME_DIRECTORY}/src/lpaggreg/headers)
+FILE(GLOB_RECURSE SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/sources/*.*)
+set(HEADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/headers)
 FILE(GLOB HEADER_FILES ${HEADER_DIR}/*.h)
 INCLUDE_DIRECTORIES(${HEADER_DIR})
-
+message(${HEADER_FILES})
+message(${SRC_FILES})
 if(STATIC)
     add_library(${PROJECT_NAME} STATIC ${SRC_FILES})
 else(STATIC)

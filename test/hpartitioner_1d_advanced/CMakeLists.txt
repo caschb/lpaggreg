@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 project(hpartitioner_1d_advanced)
 
-file(GLOB_RECURSE SRC_FILES ${CMAKE_HOME_DIRECTORY}/test/${PROJECT_NAME}/sources/*.cpp)
-set(HEADER_DIR ${CMAKE_HOME_DIRECTORY}/test/${PROJECT_NAME}/headers)
+file(GLOB_RECURSE SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/sources/*.cpp)
+set(HEADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/headers)
 file(GLOB HEADER_FILES ${HEADER_DIR}/*.h)
 
 include_directories(${HEADER_DIR} ${lpaggreg_INCLUDE_DIRS})
