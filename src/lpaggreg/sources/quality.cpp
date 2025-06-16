@@ -64,27 +64,27 @@ void lpaggreg::Quality::operator/=(lpaggreg::Quality &quality)
     loss/=quality.getLoss();
 }
 
-lpaggreg::Quality lpaggreg::operator+(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
+lpaggreg::Quality lpaggreg::operator+(const lpaggreg::Quality &quality1, const lpaggreg::Quality &quality2)
 {
     return lpaggreg::Quality(quality1.getGain()+quality2.getGain(), quality1.getLoss()+quality2.getLoss());
 }
 
-lpaggreg::Quality lpaggreg::operator-(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
+lpaggreg::Quality lpaggreg::operator-(const lpaggreg::Quality &quality1, const lpaggreg::Quality &quality2)
 {
     return lpaggreg::Quality(quality1.getGain()-quality2.getGain(), quality1.getLoss()-quality2.getLoss());
 }
 
-lpaggreg::Quality lpaggreg::operator*(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
+lpaggreg::Quality lpaggreg::operator*(const lpaggreg::Quality &quality1, const lpaggreg::Quality &quality2)
 {
     return lpaggreg::Quality(quality1.getGain()*quality2.getGain(), quality1.getLoss()*quality2.getLoss());
 }
 
-lpaggreg::Quality lpaggreg::operator/(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
+lpaggreg::Quality lpaggreg::operator/(const lpaggreg::Quality &quality1, const lpaggreg::Quality &quality2)
 {
     return lpaggreg::Quality(quality1.getGain()/quality2.getGain(), quality1.getLoss()/quality2.getLoss());
 }
 
-bool lpaggreg::operator==(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
+bool lpaggreg::operator==(const lpaggreg::Quality &quality1, const lpaggreg::Quality &quality2)
 {
     lp_quality_type precision=std::max(quality1.getGain()+quality2.getGain(),quality1.getLoss()+quality2.getLoss())/2*LP_PRECISION;
     return (quality1.getGain()==quality2.getGain()&&quality1.getLoss()==quality2.getLoss())||
@@ -92,12 +92,12 @@ bool lpaggreg::operator==(lpaggreg::Quality &quality1, lpaggreg::Quality &qualit
             (std::abs(quality1.getGain()-quality2.getGain())<precision));
 }
 
-bool lpaggreg::operator!=(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
+bool lpaggreg::operator!=(const lpaggreg::Quality &quality1, const lpaggreg::Quality &quality2)
 {
     return !(quality1==quality2);
 }
 
-std::ostream &lpaggreg::operator<<(std::ostream& stream, lpaggreg::Quality &quality)
+std::ostream &lpaggreg::operator<<(std::ostream& stream, const lpaggreg::Quality &quality)
 {
     stream<<"("<<quality.getGain()<<","<<quality.getLoss()<<")";
     return stream;

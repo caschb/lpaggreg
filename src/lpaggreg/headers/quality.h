@@ -56,13 +56,13 @@ namespace lpaggreg{
 
     };
 
-    Quality operator+(Quality &quality1, Quality &quality2);
-    Quality operator-(Quality &quality1, Quality &quality2);
-    Quality operator*(Quality &quality1, Quality &quality2);
-    Quality operator/(Quality &quality1, Quality &quality2);
-    bool operator==(Quality &quality1, Quality &quality2);
-    bool operator!=(Quality &quality1, Quality &quality2);
-    ostream& operator<<(std::ostream& stream, Quality &quality);
+    Quality operator+(const Quality &quality1, const Quality &quality2);
+    Quality operator-(const Quality &quality1, const Quality &quality2);
+    Quality operator*(const Quality &quality1, const Quality &quality2);
+    Quality operator/(const Quality &quality1, const Quality &quality2);
+    bool operator==(const Quality &quality1, const Quality &quality2);
+    bool operator!=(const Quality &quality1, const Quality &quality2);
+    ostream& operator<<(std::ostream& stream, const Quality &quality);
 
 
 }
