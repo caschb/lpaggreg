@@ -25,10 +25,10 @@ namespace lpaggreg{
 
         void computePIC(float p);
 
-        Tradeoff operator+=(const Tradeoff &tradeoff);
-        Tradeoff operator-=(const Tradeoff &tradeoff);
-        Tradeoff operator*=(const Tradeoff &tradeoff);
-        Tradeoff operator/=(const Tradeoff &tradeoff);
+        Tradeoff &operator+=(const Tradeoff &tradeoff);
+        Tradeoff &operator-=(const Tradeoff &tradeoff);
+        Tradeoff &operator*=(const Tradeoff &tradeoff);
+        Tradeoff &operator/=(const Tradeoff &tradeoff);
 
         void set(shared_ptr<Quality> quality, float p);
 
