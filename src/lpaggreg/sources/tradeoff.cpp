@@ -56,35 +56,39 @@ lpaggreg::Tradeoff::Tradeoff(shared_ptr<lpaggreg::Quality> quality)
 }
 
 
-void lpaggreg::Tradeoff::operator+=(lpaggreg::Tradeoff &tradeoff)
+lpaggreg::Tradeoff &lpaggreg::Tradeoff::operator+=(const lpaggreg::Tradeoff &tradeoff)
 {
     *quality+=*(tradeoff.quality);
     value+=tradeoff.value;
+    return *this;
 }
 
 
-void lpaggreg::Tradeoff::operator-=(lpaggreg::Tradeoff &tradeoff)
+lpaggreg::Tradeoff &lpaggreg::Tradeoff::operator-=(const lpaggreg::Tradeoff &tradeoff)
 {
     *quality-=*(tradeoff.quality);
     value-=tradeoff.value;
+    return *this;
 }
 
 
-void lpaggreg::Tradeoff::operator*=(lpaggreg::Tradeoff &tradeoff)
+lpaggreg::Tradeoff &lpaggreg::Tradeoff::operator*=(const lpaggreg::Tradeoff &tradeoff)
 {
     *quality*=*(tradeoff.quality);
     value*=tradeoff.value;
+    return *this;
 }
 
 
-void lpaggreg::Tradeoff::operator/=(lpaggreg::Tradeoff &tradeoff)
+lpaggreg::Tradeoff &lpaggreg::Tradeoff::operator/=(const lpaggreg::Tradeoff &tradeoff)
 {
     *quality/=*(tradeoff.quality);
     value/=tradeoff.value;
+    return *this;
 }
 
 
-lpaggreg::Tradeoff operator+(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
+lpaggreg::Tradeoff lpaggreg::operator+(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     lp_quality_type value=tradeoff1.getValue()+tradeoff2.getValue();
     shared_ptr<lpaggreg::Quality> quality=shared_ptr<lpaggreg::Quality>(new lpaggreg::Quality());
@@ -94,7 +98,7 @@ lpaggreg::Tradeoff operator+(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg
 }
 
 
-lpaggreg::Tradeoff operator-(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
+lpaggreg::Tradeoff lpaggreg::operator-(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     lp_quality_type value=tradeoff1.getValue()-tradeoff2.getValue();
     shared_ptr<lpaggreg::Quality> quality=shared_ptr<lpaggreg::Quality>(new lpaggreg::Quality());
@@ -104,7 +108,7 @@ lpaggreg::Tradeoff operator-(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg
 }
 
 
-lpaggreg::Tradeoff operator*(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
+lpaggreg::Tradeoff lpaggreg::operator*(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     lp_quality_type value=tradeoff1.getValue()*tradeoff2.getValue();
     shared_ptr<lpaggreg::Quality> quality=shared_ptr<lpaggreg::Quality>(new lpaggreg::Quality());
@@ -114,7 +118,7 @@ lpaggreg::Tradeoff operator*(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg
 }
 
 
-lpaggreg::Tradeoff operator/(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
+lpaggreg::Tradeoff lpaggreg::operator/(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     lp_quality_type value=tradeoff1.getValue()/tradeoff2.getValue();
     shared_ptr<lpaggreg::Quality> quality=shared_ptr<lpaggreg::Quality>(new lpaggreg::Quality());
