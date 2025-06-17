@@ -49,10 +49,10 @@ namespace lpaggreg{
 
         /*Override operators*/
 
-        void operator+=(Quality &quality);
-        void operator-=(Quality &quality);
-        void operator*=(Quality &quality);
-        void operator/=(Quality &quality);
+        Quality &operator+=(const Quality &quality);
+        Quality &operator-=(const Quality &quality);
+        Quality &operator*=(const Quality &quality);
+        Quality &operator/=(const Quality &quality);
 
     };
 

@@ -40,28 +40,32 @@ void lpaggreg::Quality::addToLoss(lp_quality_type loss)
     this->loss+=loss;
 }
 
-void lpaggreg::Quality::operator+=(lpaggreg::Quality &quality)
+lpaggreg::Quality &lpaggreg::Quality::operator+=(const lpaggreg::Quality &quality)
 {
     gain+=quality.getGain();
     loss+=quality.getLoss();
+    return *this;
 }
 
-void lpaggreg::Quality::operator-=(lpaggreg::Quality &quality)
+lpaggreg::Quality &lpaggreg::Quality::operator-=(const lpaggreg::Quality &quality)
 {
     gain-=quality.getGain();
     loss-=quality.getLoss();
+    return *this;
 }
 
-void lpaggreg::Quality::operator*=(lpaggreg::Quality &quality)
+lpaggreg::Quality &lpaggreg::Quality::operator*=(const lpaggreg::Quality &quality)
 {
     gain*=quality.getGain();
     loss*=quality.getLoss();
+    return *this;
 }
 
-void lpaggreg::Quality::operator/=(lpaggreg::Quality &quality)
+lpaggreg::Quality &lpaggreg::Quality::operator/=(const lpaggreg::Quality &quality)
 {
     gain/=quality.getGain();
     loss/=quality.getLoss();
+    return *this;
 }
 
 lpaggreg::Quality lpaggreg::operator+(const lpaggreg::Quality &quality1, const lpaggreg::Quality &quality2)
