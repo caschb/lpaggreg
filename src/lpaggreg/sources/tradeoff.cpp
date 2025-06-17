@@ -84,7 +84,7 @@ void lpaggreg::Tradeoff::operator/=(lpaggreg::Tradeoff &tradeoff)
 }
 
 
-lpaggreg::Tradeoff operator+(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
+lpaggreg::Tradeoff operator+(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     lp_quality_type value=tradeoff1.getValue()+tradeoff2.getValue();
     shared_ptr<lpaggreg::Quality> quality=shared_ptr<lpaggreg::Quality>(new lpaggreg::Quality());
@@ -94,7 +94,7 @@ lpaggreg::Tradeoff operator+(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &
 }
 
 
-lpaggreg::Tradeoff operator-(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
+lpaggreg::Tradeoff operator-(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     lp_quality_type value=tradeoff1.getValue()-tradeoff2.getValue();
     shared_ptr<lpaggreg::Quality> quality=shared_ptr<lpaggreg::Quality>(new lpaggreg::Quality());
@@ -104,7 +104,7 @@ lpaggreg::Tradeoff operator-(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &
 }
 
 
-lpaggreg::Tradeoff operator*(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
+lpaggreg::Tradeoff operator*(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     lp_quality_type value=tradeoff1.getValue()*tradeoff2.getValue();
     shared_ptr<lpaggreg::Quality> quality=shared_ptr<lpaggreg::Quality>(new lpaggreg::Quality());
@@ -114,7 +114,7 @@ lpaggreg::Tradeoff operator*(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &
 }
 
 
-lpaggreg::Tradeoff operator/(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
+lpaggreg::Tradeoff operator/(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     lp_quality_type value=tradeoff1.getValue()/tradeoff2.getValue();
     shared_ptr<lpaggreg::Quality> quality=shared_ptr<lpaggreg::Quality>(new lpaggreg::Quality());
@@ -124,20 +124,20 @@ lpaggreg::Tradeoff operator/(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &
 }
 
 
-bool lpaggreg::operator==(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
+bool lpaggreg::operator==(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     return tradeoff1.getValue()==tradeoff2.getValue();
 
 }
 
 
-bool lpaggreg::operator!=(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
+bool lpaggreg::operator!=(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     return !(tradeoff1.getValue()==tradeoff2.getValue());
 }
 
 
-bool lpaggreg::operator>(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
+bool lpaggreg::operator>(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     return (tradeoff1.getValue()>tradeoff2.getValue()||(tradeoff1.getValue()==tradeoff2.getValue())&&
             (tradeoff1.getQuality()->getGain()>tradeoff2.getQuality()->getGain()||
@@ -146,19 +146,19 @@ bool lpaggreg::operator>(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &trad
 }
 
 
-bool lpaggreg::operator<=(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
+bool lpaggreg::operator<=(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     return !(tradeoff1>tradeoff2);
 }
 
 
-bool lpaggreg::operator<(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
+bool lpaggreg::operator<(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     return !(tradeoff1>tradeoff2||tradeoff1==tradeoff2);
 }
 
 
-bool lpaggreg::operator>=(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
+bool lpaggreg::operator>=(const lpaggreg::Tradeoff &tradeoff1, const lpaggreg::Tradeoff &tradeoff2)
 {
     return !(tradeoff1<tradeoff2);
 }

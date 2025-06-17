@@ -36,16 +36,16 @@ namespace lpaggreg{
         lp_quality_type getValue() const;
     };
 
-Tradeoff operator+(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
-Tradeoff operator-(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
-Tradeoff operator*(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
-Tradeoff operator/(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
-bool operator==(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
-bool operator!=(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
-bool operator<(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
-bool operator>(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
-bool operator<=(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
-bool operator>=(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
+Tradeoff operator+(const Tradeoff &tradeoff1, const Tradeoff &tradeoff2);
+Tradeoff operator-(const Tradeoff &tradeoff1, const Tradeoff &tradeoff2);
+Tradeoff operator*(const Tradeoff &tradeoff1, const Tradeoff &tradeoff2);
+Tradeoff operator/(const Tradeoff &tradeoff1, const Tradeoff &tradeoff2);
+bool operator==(const Tradeoff &tradeoff1, const Tradeoff &tradeoff2);
+bool operator!=(const Tradeoff &tradeoff1, const Tradeoff &tradeoff2);
+bool operator<(const Tradeoff &tradeoff1, const Tradeoff &tradeoff2);
+bool operator>(const Tradeoff &tradeoff1, const Tradeoff &tradeoff2);
+bool operator<=(const Tradeoff &tradeoff1, const Tradeoff &tradeoff2);
+bool operator>=(const Tradeoff &tradeoff1, const Tradeoff &tradeoff2);
 
 }
 
