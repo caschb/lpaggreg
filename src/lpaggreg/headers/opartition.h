@@ -21,8 +21,8 @@ namespace lpaggreg{
         int getEnd() const;
         int getSize();
 
-        friend bool operator==(OPart &opart1, OPart &opart2);
-        friend bool operator!=(OPart &opart1, OPart &opart2);
+        friend bool operator==(const OPart &opart1, const OPart &opart2);
+        friend bool operator!=(const OPart &opart1, const OPart &opart2);
 
         shared_ptr<Quality> getQuality() const;
 
@@ -48,8 +48,8 @@ namespace lpaggreg{
         oqualities qualities;
     };
 
-    bool operator==(OPartition &opartition1, OPartition &opartition2);
-    bool operator!=(OPartition &opartition1, OPartition &opartition2);
+    bool operator==(const OPartition &opartition1, const OPartition &opartition2);
+    bool operator!=(const OPartition &opartition1, const OPartition &opartition2);
 }
 
 #endif // OPARTITION_H

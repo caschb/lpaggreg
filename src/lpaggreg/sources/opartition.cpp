@@ -69,19 +69,19 @@ oqualities lpaggreg::OPartition::getQualities() const
     return qualities;
 }
 
-bool lpaggreg::operator==(lpaggreg::OPart &opart1, lpaggreg::OPart &opart2)
+bool lpaggreg::operator==(const lpaggreg::OPart &opart1, const lpaggreg::OPart &opart2)
 {
     return (opart1.getStart()==opart2.getStart()&&opart1.getEnd()==opart2.getEnd());
 }
 
-bool lpaggreg::operator!=(lpaggreg::OPart &opart1, lpaggreg::OPart &opart2)
+bool lpaggreg::operator!=(const lpaggreg::OPart &opart1, const lpaggreg::OPart &opart2)
 {
     return !(opart1==opart2);
 }
 
 #ifndef PARTITION_COMPARE_QUALITY
 
-bool lpaggreg::operator==(lpaggreg::OPartition &opartition1, lpaggreg::OPartition &opartition2)
+bool lpaggreg::operator==(const lpaggreg::OPartition &opartition1, const lpaggreg::OPartition &opartition2)
 {
     if (opartition1.getParts().size()!=opartition2.getParts().size()){
         return false;
@@ -98,14 +98,14 @@ bool lpaggreg::operator==(lpaggreg::OPartition &opartition1, lpaggreg::OPartitio
 
 #ifdef PARTITION_COMPARE_QUALITY
 
-bool lpaggreg::operator==(lpaggreg::OPartition &opartition1, lpaggreg::OPartition &opartition2)
+bool lpaggreg::operator==(const lpaggreg::OPartition &opartition1, const lpaggreg::OPartition &opartition2)
 {
     return (opartition1.getQuality()==opartition2.getQuality());
 }
 #endif
 
 
-bool lpaggreg::operator!=(lpaggreg::OPartition &opartition1, lpaggreg::OPartition &opartition2)
+bool lpaggreg::operator!=(const lpaggreg::OPartition &opartition1, const lpaggreg::OPartition &opartition2)
 {
     return !(opartition1==opartition2);
 }
